@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Action: Courses by Category -->
+    <record id="academy_courses_by_category_action" model="ir.actions.act_window">
+        <field name="name">Courses</field>
+        <field name="res_model">academy.course</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('category_id','=',active_id)]</field>
+    </record>
+
+
+    <!-- Category List View -->
+    <record id="academy_course_category_list_view" model="ir.ui.view">
+        <field name="name">academy.course.category.list</field>
+        <field name="model">academy.course.category</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="course_count"/>
+            </list>
+        </field>
+    </record>
+
+
+    <!-- Category Form View -->
+    <record id="academy_course_category_form_view" model="ir.ui.view">
+        <field name="name">academy.course.category.form</field>
+        <field name="model">academy.course.category</field>
+        <field name="arch" type="xml">
+            <form>
+
+                <!-- Smart Button -->
+                <div class="oe_button_box" name="button_box">
+                    <button type="action"
+                            name="%(academy_courses_by_category_action)d"
+                            class="oe_stat_button"
+                            icon="fa-book">
+                        <field name="course_count" widget="statinfo"/>
+                    </button>
+                </div>
+
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+
+            </form>
+        </field>
+    </record>
+
+</odoo>

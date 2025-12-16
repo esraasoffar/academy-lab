@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- ACTION -->
+    <record id="academy_course_action" model="ir.actions.act_window">
+        <field name="name">Courses</field>
+        <field name="res_model">academy.course</field>
+        <field name="view_mode">kanban,list,form</field>
+    </record>
+
+    <record id="academy_enrollment_action" model="ir.actions.act_window">
+        <field name="name">Enrollments</field>
+        <field name="res_model">academy.enrollment</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+
+    <!-- LIST VIEW -->
+    <record id="academy_course_list_view" model="ir.ui.view">
+        <field name="name">academy.course.list</field>
+        <field name="model">academy.course</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="instructor_id"/>
+                <field name="state"/>
+                <field name="enrolled_count"/>
+                <field name="available_seats"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- SEARCH VIEW -->
+    <record id="academy_course_search_view" model="ir.ui.view"> 
+        <field name="name">academy.course.search</field>
+        <field name="model">academy.course</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="instructor_id"/>
+                <field name="category_id"/>
+
+                <filter name="filter_published"
+                        string="Published"
+                        domain="[('state','=','published')]"/>
+
+                <filter name="filter_draft"
+                        string="Draft"
+                        domain="[('state','=','draft')]"/>
+
+                <filter name="filter_full"
+                        string="Full"
+                        domain="[('is_full','=',True)]"/>
+
+                <separator/>
+
+                <group string="Group By">
+                    <filter name="group_state"
+                            string="State"
+                            context="{'group_by':'state'}"/>
+                    <filter name="group_instructor"
+                            string="Instructor"
+                            context="{'group_by':'instructor_id'}"/>
+                    <filter name="group_category"
+                            string="Category"
+                            context="{'group_by':'category_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+
+
+    <!-- FORM VIEW -->
+    <record id="academy_course_form_view" model="ir.ui.view">
+        <field name="name">academy.course.form</field>
+        <field name="model">academy.course</field>
+        <field name="arch" type="xml">
+            <form>
+
+                <!-- HEADER -->
+                <header>
+                    <field name="state" widget="statusbar"/>
+
+                    <button name="action_publish"
+                            string="Publish"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state != 'draft'"/>
+
+                    <button name="action_start"
+                            string="Start"
+                            type="object"
+                            invisible="state != 'published'"/>
+
+                    <button name="action_complete"
+                            string="Complete"
+                            type="object"
+                            invisible="state != 'in_progress'"/>
+
+                    <button name="action_cancel"
+                            string="Cancel"
+                            type="object"
+                            class="btn-secondary"
+                            invisible="state in ('done','cancelled')"/>
+                </header>
+
+
+                
+                <div class="oe_button_box" name="button_box">
+                    <button type="action"
+                            name="%(academy_enrollment_action)d"
+                            class="oe_stat_button"
+                            icon="fa-users"
+                            groups="academy_lab.academy_group_manager,academy_lab.academy_group_instructor"
+                            context="{'default_course_id': id}"
+                            domain="[('course_id','=',id)]">
+                        <field name="enrolled_count" widget="statinfo"/>
+                    </button>
+                </div>
+
+
+
+                <!-- BODY -->
+                <sheet>
+
+                    <!-- MAIN INFO -->
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="category_id"/>
+                            <field name="instructor_id"/>
+                        </group>
+
+                        <group>
+                            <field name="duration_hours"/>
+                            <field name="price"/>
+                            <field name="max_students"/>
+                        </group>
+                    </group>
+
+                    <!-- DATES -->
+                    <group string="Schedule">
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                    </group>
+
+                    <!-- STATS -->
+                    <group string="Statistics">
+                        <field name="enrolled_count" readonly="1"/>
+                        <field name="available_seats" readonly="1"/>
+                        <field name="is_full" readonly="1"/>
+                    </group>
+
+                </sheet>
+
+                <!-- CHATTER -->
+                <chatter/>
+
+            </form>
+        </field>
+    </record>
+
+
+    <!-- KANBAN VIEW -->
+    <record id="academy_course_kanban_view" model="ir.ui.view">
+        <field name="name">academy.course.kanban</field>
+        <field name="model">academy.course</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state">
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <strong>
+                                <field name="name"/>
+                            </strong>
+                            <div>
+                                Instructor:
+                                <field name="instructor_name"/>
+                            </div>
+                            <div>
+                                Seats:
+                                <field name="available_seats"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+
+</odoo>

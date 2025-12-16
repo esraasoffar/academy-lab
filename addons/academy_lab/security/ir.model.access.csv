@@ -1,0 +1,12 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_course_student,academy.course student,model_academy_course,academy_group_student,1,0,0,0
+access_course_instructor,academy.course instructor,model_academy_course,academy_group_instructor,1,1,1,1
+access_course_manager,academy.course manager,model_academy_course,academy_group_manager,1,1,1,1
+
+access_enrollment_student,academy.enrollment student,model_academy_enrollment,academy_group_student,1,0,1,0
+access_enrollment_instructor,academy.enrollment instructor,model_academy_enrollment,academy_group_instructor,1,0,1,0
+access_enrollment_manager,academy.enrollment manager,model_academy_enrollment,academy_group_manager,1,1,1,1
+
+access_category_student,academy.course.category student,model_academy_course_category,academy_group_student,1,0,0,0
+access_category_instructor,academy.course.category instructor,model_academy_course_category,academy_group_instructor,1,0,0,0
+access_category_manager,academy.course.category manager,model_academy_course_category,academy_group_manager,1,1,1,1

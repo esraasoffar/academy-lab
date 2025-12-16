@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Student Rules -->
+
+    <!-- Student: see only published courses -->
+    <record id="rule_course_student_published" model="ir.rule">
+        <field name="name">Student - Published Courses Only</field>
+        <field name="model_id" ref="model_academy_course"/>
+        <field name="groups" eval="[(4, ref('academy_group_student'))]"/>
+        <field name="domain_force">[('state', '=', 'published')]</field>
+    </record>
+
+    <!-- Student: see only own enrollments -->
+    <record id="rule_enrollment_student_own" model="ir.rule">
+        <field name="name">Student - Own Enrollments Only</field>
+        <field name="model_id" ref="model_academy_enrollment"/>
+        <field name="groups" eval="[(4, ref('academy_group_student'))]"/>
+        <field name="domain_force">
+            [('student_id', '=', user.partner_id.id)]
+        </field>
+    </record>
+
+    <!-- Instructor Rules -->
+    <!-- Instructor: read all enrollments -->
+    <record id="rule_enrollment_instructor_read" model="ir.rule">
+        <field name="name">Instructor - Read All Enrollments</field>
+        <field name="model_id" ref="model_academy_enrollment"/>
+        <field name="groups" eval="[(4, ref('academy_group_instructor'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+</odoo>

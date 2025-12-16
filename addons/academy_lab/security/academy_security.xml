@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Student -->
+    <record id="academy_group_student" model="res.groups">
+        <field name="name">Academy Student</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+    <!-- Instructor (implies Student) -->
+    <record id="academy_group_instructor" model="res.groups">
+        <field name="name">Academy Instructor</field>
+        <field name="implied_ids" eval="[(4, ref('academy_group_student'))]"/>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+    <!-- Manager (implies Instructor) -->
+    <record id="academy_group_manager" model="res.groups">
+        <field name="name">Academy Manager</field>
+        <field name="implied_ids" eval="[(4, ref('academy_group_instructor'))]"/>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+</odoo>
